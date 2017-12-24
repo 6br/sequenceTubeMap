@@ -1681,16 +1681,32 @@ function generateTrackColor(track, highlight) {
   let trackColor;
   if (track.hasOwnProperty('type') && track.type === 'read') {
     if (track.hasOwnProperty('is_reverse') && track.is_reverse === true) {
-      trackColor = reverseReadColors[track.id % reverseReadColors.length];
+      if (track.hasOwnProperty('reverse_read_color')) {
+        trackColor = track.reverse_read_color;
+      } else {
+        trackColor = reverseReadColors[track.id % reverseReadColors.length];
+      }
     } else {
-      trackColor = forwardReadColors[track.id % forwardReadColors.length];
+      if (track.hasOwnProperty('forward_read_color')) {
+        trackColor = track.forward_read_color;
+      } else {
+        trackColor = forwardReadColors[track.id % forwardReadColors.length];
+      }
     }
   } else {
-    if ((config.showExonsFlag === false) || (highlight !== 'plain')) {
-      trackColor = haplotypeColors[track.id % haplotypeColors.length];
-    } else {
-      trackColor = exonColors[track.id % exonColors.length];
-    }
+     if ((config.showExonsFlag === false) || (highlight !== 'plain')) {
+        if (track.hasOwnProperty('haplotype_color')) {
+          trackColor = track.haplotype_color;
+        } else {
+          trackColor = haplotypeColors[track.id % haplotypeColors.length];
+        }
+     } else {
+        if (track.hasOwnProperty('exon_color')) {
+          trackColor = track.exon_color;
+        } else {
+          trackColor = exonColors[track.id % exonColors.length];
+        }
+     }
   }
   return trackColor;
 }
@@ -2583,6 +2599,7 @@ export function vgExtractTracks(vg) {
     track.id = index;
     track.sequence = sequence;
     if (path.hasOwnProperty('freq')) track.freq = path.freq;
+    if (path.hasOwnProperty('color')) track.color = path.color;
     if (path.hasOwnProperty('name')) track.name = path.name;
     if (path.hasOwnProperty('indexOfFirstBase')) track.indexOfFirstBase = Number(path.indexOfFirstBase);
     result.push(track);
