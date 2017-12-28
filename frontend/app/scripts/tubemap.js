@@ -2160,7 +2160,7 @@ function drawNodes(dNodes) {
     .style('stroke', 'black')
     .style('stroke-width', '2px')
     .append('svg:title')
-      .text(d => d.name + ": " + d.indexSequence + "bp");
+      .text(d => d.name + ": " + d.sequenceLength + "bp");
 }
 
 // draw seqence labels for nodes
@@ -2201,18 +2201,24 @@ function drawRuler() {
   let indexOfFirstBaseInNode = rulerTrack.indexOfFirstBase;
   let atLeastOneMarkingDrawn = false;
   let xCoordOfPreviousMarking = -100;
-  let nextNodeShouldAddMarkingAtZero = true;
 
   // draw ruler marking at the left end of chart for compressed charts
   // (this marking is on purpose not at a 0 % 100 position)
+  if (config.nodeWidthOption !== 0) {
+    const firstNode = nodes[rulerTrack.indexSequence[0]];
+    xCoordOfPreviousMarking = getXCoordinateOfBaseWithinNode(firstNode, 0);
+    drawRulerMarking(indexOfFirstBaseInNode, xCoordOfPreviousMarking);
+    atLeastOneMarkingDrawn = true;
+  }
 
   rulerTrack.indexSequence.forEach((nodeIndex) => {
     const currentNode = nodes[nodeIndex];
-    if (config.nodeWidthOption !== 0 && nextNodeShouldAddMarkingAtZero) {
-        xCoordOfPreviousMarking = getXCoordinateOfBaseWithinNode(currentNode, 0);
-        drawRulerMarking(indexOfFirstBaseInNode, xCoordOfPreviousMarking);
+    let xCoordOfMarkingAtZero = getXCoordinateOfBaseWithinNode(currentNode, 0);
+    if (rulerTrack.hasOwnProperty("coordinate") && indexOfFirstBaseInNode !== rulerTrack.coordinate[nodeIndex] && xCoordOfPreviousMarking + 80 < xCoordOfMarkingAtZero) {
+        indexOfFirstBaseInNode = rulerTrack.coordinate[nodeIndex];
+        drawRulerMarking(indexOfFirstBaseInNode, xCoordOfMarkingAtZero);
         atLeastOneMarkingDrawn = true;
-        nextNodeShouldAddMarkingAtZero = false;
+        xCoordOfPreviousMarking = xCoordOfMarkingAtZero;
     }
     let nextMarking = Math.ceil(indexOfFirstBaseInNode / markingInterval) * markingInterval;
     while (nextMarking < indexOfFirstBaseInNode + currentNode.sequenceLength) {
@@ -2224,16 +2230,9 @@ function drawRuler() {
       }
       nextMarking += markingInterval;
     }
-      if (rulerTrack.hasOwnProperty("coordinate") && rulerTrack.coordinate[nodeIndex] !== null) {
-        if (indexOfFirstBaseInNode + nodes[nodeIndex].sequenceLength !== rulerTrack.coordinate[nodeIndex]) {
-          nextNodeShouldAddMarkingAtZero = true;
-        }
-      indexOfFirstBaseInNode = rulerTrack.coordinate[nodeIndex];
-    } else {
-      indexOfFirstBaseInNode += nodes[nodeIndex].sequenceLength;
-    }
+    indexOfFirstBaseInNode += nodes[nodeIndex].sequenceLength;
   });
-
+　
   // if no markings drawn, draw one at the very beginning
   if (!atLeastOneMarkingDrawn) {
     drawRulerMarking(rulerTrack.indexOfFirstBase, nodes[rulerTrack.indexSequence[0]].x - 4);
