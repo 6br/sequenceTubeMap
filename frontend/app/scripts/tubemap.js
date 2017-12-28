@@ -2223,7 +2223,11 @@ function drawRuler() {
       }
       nextMarking += markingInterval;
     }
-    indexOfFirstBaseInNode += nodes[nodeIndex].sequenceLength;
+      if (rulerTrack.hasOwnProperty("coordinate") && rulerTrack.coordinate[nodeIndex] !== null) {
+      indexOfFirstBaseInNode = rulerTrack.coordinate[nodeIndex];
+    } else {
+      indexOfFirstBaseInNode += nodes[nodeIndex].sequenceLength;
+    }
   });
 
   // if no markings drawn, draw one at the very beginning
