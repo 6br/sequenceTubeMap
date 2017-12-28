@@ -2444,7 +2444,7 @@ function drawLegend() {
   let content = '<table class="table-sm table-condensed table-nonfluid"><thead><tr><th>Color</th><th>Trackname</th><th>Show Track</th></tr></thead>';
   const listeners = [];
   for (let i = 0; i < tracks.length; i += 1) {
-    if (tracks[i].type === 'haplo' && !(tracks[i].hasOwnProperty('hideLegend') && tracks[i].hideLegend == true ) {
+    if (tracks[i].type === 'haplo' && !(tracks[i].hasOwnProperty('hideLegend') && tracks[i].hideLegend == true )) {
       // content += '<tr><td><span style="color: ' + generateTrackColor(tracks[i], 'exon') + '"><i class="fa fa-square" aria-hidden="true"></i></span></td>';
       // content += `<tr><td><span style="color: ${generateTrackColor(tracks[i], 'exon')}"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span></td>`;
       // content += `<tr><td><p style="color: ${generateTrackColor(tracks[i], 'exon')}">O &#x25FE;</p></td>`;
