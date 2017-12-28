@@ -2211,14 +2211,16 @@ function drawRuler() {
     atLeastOneMarkingDrawn = true;
   }
 
-  rulerTrack.indexSequence.forEach((nodeIndex) => {
+  rulerTrack.indexSequence.forEach((nodeIndex, index) => {
     const currentNode = nodes[nodeIndex];
     let xCoordOfMarkingAtZero = getXCoordinateOfBaseWithinNode(currentNode, 0);
-    if (rulerTrack.hasOwnProperty("coordinate") && indexOfFirstBaseInNode !== rulerTrack.coordinate[nodeIndex] && xCoordOfPreviousMarking + 80 < xCoordOfMarkingAtZero) {
-        indexOfFirstBaseInNode = rulerTrack.coordinate[nodeIndex];
-        drawRulerMarking(indexOfFirstBaseInNode, xCoordOfMarkingAtZero);
-        atLeastOneMarkingDrawn = true;
-        xCoordOfPreviousMarking = xCoordOfMarkingAtZero;
+      if (rulerTrack.hasOwnProperty("coordinate") && indexOfFirstBaseInNode !== rulerTrack.coordinate[index]) {
+        indexOfFirstBaseInNode = rulerTrack.coordinate[index];
+        if (xCoordOfPreviousMarking + 80 < xCoordOfMarkingAtZero) {
+          drawRulerMarking(indexOfFirstBaseInNode, xCoordOfMarkingAtZero);
+          atLeastOneMarkingDrawn = true;
+          xCoordOfPreviousMarking = xCoordOfMarkingAtZero;
+        }
     }
     let nextMarking = Math.ceil(indexOfFirstBaseInNode / markingInterval) * markingInterval;
     while (nextMarking < indexOfFirstBaseInNode + currentNode.sequenceLength) {
@@ -2232,7 +2234,7 @@ function drawRuler() {
     }
     indexOfFirstBaseInNode += nodes[nodeIndex].sequenceLength;
   });
-　
+
   // if no markings drawn, draw one at the very beginning
   if (!atLeastOneMarkingDrawn) {
     drawRulerMarking(rulerTrack.indexOfFirstBase, nodes[rulerTrack.indexSequence[0]].x - 4);
