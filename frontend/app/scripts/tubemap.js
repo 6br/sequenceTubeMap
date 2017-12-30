@@ -2187,7 +2187,7 @@ function drawRuler() {
   const rulerTrack = tracks[rulerTrackIndex];
   const isNegative = n => ((n = +n) || 1 / n) < 0;
 
-  if (rularTrack.indexSequence.some(index => isNegative(index))) {
+  if (rulerTrack.indexSequence.some(index => isNegative(index))) {
     return;
   }
 
