@@ -2166,6 +2166,11 @@ function drawRuler() {
   let rulerTrackIndex = 0;
   while (tracks[rulerTrackIndex].name !== trackForRuler) rulerTrackIndex += 1;
   const rulerTrack = tracks[rulerTrackIndex];
+  const isNegative = n => ((n = +n) || 1 / n) < 0;
+
+  if (rularTrack.indexSequence.some(index => isNegative(index))) {
+    return;
+  }
 
   // draw horizontal line
   svg.append('line')
