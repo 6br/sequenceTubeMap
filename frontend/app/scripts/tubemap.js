@@ -2941,6 +2941,9 @@ function mergeNodes() {
       const nodeIndex = nodeMap.get(nodeName);
       if (mergeableWithPred(nodeIndex, pred, succ)) {
         track.sequence.splice(i, 1);
+        if (track.hasOwnProperty("coordinate")) {
+          track.coordinate.splice(i, 1);
+        }
       }
     }
   });
