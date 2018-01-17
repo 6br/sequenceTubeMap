@@ -2572,6 +2572,12 @@ function generateNodeWidth() {
         node.pixelWidth = Math.round((node.width - 1) * 8.401);
       });
       break;
+    case 3:
+      nodes.forEach((node) => {
+        node.width = (node.sequenceLength / 1000);
+        node.pixelWidth = Math.round((node.width - 1) * 8.401);
+      });
+      break;
     default:
       nodes.forEach((node) => {
         node.width = node.sequenceLength;
