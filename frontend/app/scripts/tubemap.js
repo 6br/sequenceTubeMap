@@ -62,6 +62,7 @@ const config = {
   reverseReadColors: 'blues',
   exonColors: 'lightColors',
   hideLegendFlag: false,
+  firstTrackLinear: false
 };
 
 // variables for storing info which can be directly translated into drawing instructions
@@ -91,6 +92,7 @@ export function create(params) {
   bed = params.bed || null;
   config.clickableNodesFlag = params.clickableNodes || false;
   config.hideLegendFlag = params.hideLegend || false;
+  config.firstTrackLinear = params.firstTrackLinear || false;
   const tr = createTubeMap();
   if (!config.hideLegendFlag) drawLegend(tr);
 }
@@ -1417,7 +1419,11 @@ function generateSingleLaneAssignment(assignment, order) {
   // console.log(assignment);
 
   getIdealLanesAndCoords(assignment, order);
-  assignment.sort(compareByIdealLane);
+  if (config.firstTrackLinear) {
+    assignment.slice(1, -1).sort(compareByIdealLane);
+  } else {
+    assignment.sort(compareByIdealLane);
+  }
 
   assignment.forEach((node) => {
     if (node.node !== null) {
@@ -1449,7 +1455,7 @@ function generateSingleLaneAssignment(assignment, order) {
     currentY += 25;
   });
 
-  adjustVertically(assignment, potentialAdjustmentValues);
+  if (!config.firstTrackLinear) adjustVertically(assignment, potentialAdjustmentValues);
 }
 
 // moves all tracks at a single horizontal location (=order) up/down to minimize lane changes
