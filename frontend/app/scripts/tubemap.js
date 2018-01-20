@@ -93,7 +93,7 @@ export function create(params) {
   bed = params.bed || null;
   config.clickableNodesFlag = params.clickableNodes || false;
   config.hideLegendFlag = params.hideLegend || false;
-  config.firstTrackLinear = params.firstTrackLinear || false;
+  config.firstTrackLinear = params.firstTrackLinear || true;
   const tr = createTubeMap();
   if (!config.hideLegendFlag) drawLegend(tr);
 }
@@ -1455,7 +1455,7 @@ function generateSingleLaneAssignment(assignment, order) {
     currentY += 25;
   });
 
-  if (!config.firstTrackLinear) adjustVertically(assignment, potentialAdjustmentValues);
+  adjustVertically(assignment, potentialAdjustmentValues);
 }
 
 // moves all tracks at a single horizontal location (=order) up/down to minimize lane changes
@@ -1469,6 +1469,8 @@ function adjustVertically(assignment, potentialAdjustmentValues) {
       verticalAdjustment = moveBy;
     }
   });
+
+  if (config.firstTrackLinear) assignment = assignment.slice(1, -1);
 
   assignment.forEach((node) => {
     if (node.node !== null) {
