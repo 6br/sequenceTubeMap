@@ -2975,6 +2975,7 @@ function mergeNodes() {
 }
 
 function mergeableWithPred(index, pred, succ) {
+  if (!pred[index]) return false;
   if (pred[index].length !== 1) return false;
   if (pred[index][0] === 'None') return false;
   let predecessor = pred[index][0];
