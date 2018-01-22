@@ -571,9 +571,9 @@ function compareReadIncomingSegmentsByComingFrom(a, b) {
   const pathA = reads[a[0]].path[a[1] - 1];
   const pathB = reads[b[0]].path[b[1] - 1];
   if (pathB === undefined) {
-    return -1;
-  } else if (pathA === undefined) {
     return 1;
+  } else if (pathA === undefined) {
+    return -1;
   }
   if (pathA.hasOwnProperty('y')) {
     if (pathB.hasOwnProperty('y')) {
