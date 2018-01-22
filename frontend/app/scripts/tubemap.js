@@ -62,7 +62,8 @@ const config = {
   reverseReadColors: 'blues',
   exonColors: 'lightColors',
   hideLegendFlag: false,
-  firstTrackLinear: false
+  firstTrackLinear: false,
+  fillNodesFlag: false
 };
 
 // variables for storing info which can be directly translated into drawing instructions
@@ -93,6 +94,7 @@ export function create(params) {
   config.clickableNodesFlag = params.clickableNodes || false;
   config.hideLegendFlag = params.hideLegend || false;
   config.firstTrackLinear = params.firstTrackLinear || false;
+  config.fillNodesFlag = params.fillNodes || false;
   const tr = createTubeMap();
   if (!config.hideLegendFlag) drawLegend(tr);
 }
@@ -200,7 +202,7 @@ export function setColorSet(trackType, colorSet) {
 
 // sets which option should be used for calculating the node width from its sequence length
 export function setNodeWidthOption(value) {
-  if ((value === 0) || (value === 1) || (value === 2)) {
+  if ((value === 0) || (value === 1) || (value === 2) || (value === 3)) {
     if (config.nodeWidthOption !== value) {
       config.nodeWidthOption = value;
       if (svg !== undefined) {
@@ -2167,7 +2169,7 @@ function drawNodes(dNodes) {
     .on('dblclick', nodeDoubleClick)
     .style('fill', '#fff')
     // .style('fill-opacity', '0.4')
-    .style('fill-opacity', config.showExonsFlag ? '0.4' : '0.6')
+    .style('fill-opacity', config.nodeFillFlag ? '0.0' : config.showExonsFlag ? '0.4' : '0.6')
     .style('stroke', 'black')
     .style('stroke-width', '2px')
     .append('svg:title')
@@ -2975,7 +2977,7 @@ function mergeNodes() {
 }
 
 function mergeableWithPred(index, pred, succ) {
-  if (!pred[index]) return false;
+  // if (!pred[index]) return false;
   if (pred[index].length !== 1) return false;
   if (pred[index][0] === 'None') return false;
   let predecessor = pred[index][0];
