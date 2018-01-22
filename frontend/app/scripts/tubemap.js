@@ -2107,12 +2107,14 @@ function drawReversalsByColor(corners, rectangles, type) {
 function drawNodes(dNodes) {
   let x;
   let y;
+  let ypad = 9;
+  let xpad = 9;//config.nodeWidthOption === 0 ? 9 : 0;
 
   dNodes.forEach((node) => {
     // top left arc
-    node.d = `M ${node.x - 9} ${node.y} Q ${node.x - 9} ${node.y - 9} ${node.x} ${node.y - 9}`;
+    node.d = `M ${node.x - xpad} ${node.y} Q ${node.x - xpad} ${node.y - ypad} ${node.x} ${node.y - ypad}`;
     x = node.x;
-    y = node.y - 9;
+    y = node.y - ypad;
 
     // top straight
     if (node.width > 1) {
@@ -2121,9 +2123,9 @@ function drawNodes(dNodes) {
     }
 
     // top right arc
-    node.d += ` Q ${x + 9} ${y} ${x + 9} ${y + 9}`;
-    x += 9;
-    y += 9;
+    node.d += ` Q ${x + xpad} ${y} ${x + xpad} ${y + ypad}`;
+    x += xpad;
+    y += ypad;
 
     // right straight
     if (node.contentHeight > 0) {
@@ -2133,9 +2135,9 @@ function drawNodes(dNodes) {
     }
 
     // bottom right arc
-    node.d += ` Q ${x} ${y + 9} ${x - 9} ${y + 9}`;
-    x -= 9;
-    y += 9;
+    node.d += ` Q ${x} ${y + ypad} ${x - xpad} ${y + ypad}`;
+    x -= xpad;
+    y += ypad;
 
     // bottom straight
     if (node.width > 1) {
@@ -2144,9 +2146,9 @@ function drawNodes(dNodes) {
     }
 
     // bottom left arc
-    node.d += ` Q ${x - 9} ${y} ${x - 9} ${y - 9}`;
-    x -= 9;
-    y -= 9;
+    node.d += ` Q ${x - xpad} ${y} ${x - xpad} ${y - ypad}`;
+    x -= xpad;
+    y -= ypad;
 
     // left straight
     // if (node.degree > 1) {
@@ -2167,9 +2169,9 @@ function drawNodes(dNodes) {
     .on('mouseover', nodeMouseOver)
     .on('mouseout', nodeMouseOut)
     .on('dblclick', nodeDoubleClick)
-    .style('fill', '#fff')
+    .style('fill', config.nodeWidthOption === 0 ? '#fff': '#fff')
     // .style('fill-opacity', '0.4')
-    .style('fill-opacity', config.nodeFillFlag ? '0.0' : config.showExonsFlag ? '0.4' : '0.6')
+    .style('fill-opacity', config.fillNodesFlag ? '1.0' : config.showExonsFlag ? '0.4' : '0.6')
     .style('stroke', 'black')
     .style('stroke-width', '2px')
     .append('svg:title')
