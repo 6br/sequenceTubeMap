@@ -524,6 +524,13 @@ function compareNoNodeReadsByPreviousY(a, b) {
   const segmentA = reads[a.readIndex].path[a.pathIndex];
   const segmentB = reads[b.readIndex].path[b.pathIndex];
   if (segmentA.order === segmentB.order) {
+      if (a.previousY !== undefined && b.previousY !== undefined ){
+          return a.previousY - b.previousY;
+      } else {
+          return a.readIndex - b.readIndex;
+      }
+  }
+  if (segmentA.order === segmentB.order) {
     return a.previousY - b.previousY;
   }
   return segmentA.order - segmentB.order;
