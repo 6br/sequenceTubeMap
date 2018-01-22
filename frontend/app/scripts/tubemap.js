@@ -570,11 +570,11 @@ function compareReadIncomingSegmentsByComingFrom(a, b) {
   // TODO: incoming from reversal (u-turn)
   const pathA = reads[a[0]].path[a[1] - 1];
   const pathB = reads[b[0]].path[b[1] - 1];
-  if (pathB === undefined) {
+  /*if (pathB === undefined) {
     return 1;
   } else if (pathA === undefined) {
     return -1;
-  }
+  }*/
   if (pathA.hasOwnProperty('y')) {
     if (pathB.hasOwnProperty('y')) {
       return pathA.y - pathB.y; // a and b have y-property
