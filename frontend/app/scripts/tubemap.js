@@ -2290,7 +2290,7 @@ function drawTrackRectangles(rectangles, type) {
     .enter().append('rect')
     .attr('x', d => d.xStart)
     .attr('y', d => d.yStart)
-    .attr('width', d => d.xEnd - d.xStart + 1)
+    .attr('width', d => d.xEnd - d.xStart + 1 > 0 ? d.xEnd - d.xStart + 1 : 1)
     .attr('height', d => d.yEnd - d.yStart + 1)
     // .style('fill', function(d) { return color(d[4]); })
     .style('fill', d => d.color)
