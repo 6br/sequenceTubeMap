@@ -334,10 +334,11 @@ function createTubeMap() {
 
   // draw only those nodes which have coords assigned to them
   const dNodes = removeUnusedNodes(nodes);
-  drawNodes(dNodes);
 
   drawReversalsByColor(trackCorners, trackVerticalRectangles, 'read');
-  // generateTrackIndexSequences(tracks);
+  drawNodes(dNodes);
+
+    // generateTrackIndexSequences(tracks);
 
   if (config.nodeWidthOption === 0) drawLabels(dNodes);
   if (trackForRuler !== undefined) drawRuler();
